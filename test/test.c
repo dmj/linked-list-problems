@@ -13,6 +13,7 @@ test_basic_functions ()
 {
   node *list = make_list(3, 1, 2, 3);
   TEST_ASSERT_EQUAL(3, list_length(list));
+  free_list(&list);
 }
 
 void
@@ -22,6 +23,7 @@ test_problem_01 ()
   TEST_ASSERT_EQUAL(3, list_count(list, 2));
   TEST_ASSERT_EQUAL(1, list_count(list, 1));
   TEST_ASSERT_EQUAL(0, list_count(list, 0));
+  free_list(&list);
 }
 
 void
@@ -31,6 +33,7 @@ test_problem_02 ()
   TEST_ASSERT_EQUAL(1, list_nth(list, 0));
   TEST_ASSERT_EQUAL(2, list_nth(list, 4));
   TEST_ASSERT_EQUAL(3, list_nth(list, 3));
+  free_list(&list);
 }
 
 void
@@ -44,6 +47,7 @@ test_problem_04 ()
   TEST_ASSERT_EQUAL(3, list_nth(list, 0));
   list_pop(&list);
   TEST_ASSERT_EQUAL(0, list_length(list));
+  free_list(&list);
 }
 
 int

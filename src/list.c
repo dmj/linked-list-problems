@@ -109,6 +109,22 @@ list_nth (node *list, int index)
   exit(-1);
 }
 
+// Problem 3: Deallocate LIST.
+void
+free_list (node **listref)
+{
+  node *current = *listref;
+  node *next;
+
+  while (current) {
+    next = current->next;
+    free(current);
+    current = next;
+  }
+
+  *listref = NULL;
+}
+
 // Problem 4: Remove the head of LIST.
 void
 list_pop (node **headref)
