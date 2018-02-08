@@ -52,3 +52,18 @@ make_list (int number_of_elements, ...)
 
   return list;
 }
+
+// Problem 1: Return number of times VALUE occurs in LIST.
+int
+list_count (node *list, int value)
+{
+  int count     = 0;
+  node *current = list;
+  while (current->next) {
+    if (current->data == value) {
+      count++;
+    }
+    current = current->next;
+  }
+  return count;
+}

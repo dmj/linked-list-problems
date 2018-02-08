@@ -15,10 +15,20 @@ test_basic_functions ()
   TEST_ASSERT_EQUAL(3, list_length(list));
 }
 
+void
+test_problem_01 ()
+{
+  node *list = make_list(5, 1, 2, 2, 3, 2);
+  TEST_ASSERT_EQUAL(3, list_count(list, 2));
+  TEST_ASSERT_EQUAL(1, list_count(list, 1));
+  TEST_ASSERT_EQUAL(0, list_count(list, 0));
+}
+
 int
 main()
 {
     UNITY_BEGIN();
     RUN_TEST(test_basic_functions);
+    RUN_TEST(test_problem_01);
     return UNITY_END();
 }
