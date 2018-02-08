@@ -28,9 +28,9 @@ void
 test_problem_02 ()
 {
   node *list = make_list(5, 1, 2, 2, 3, 2);
-  TEST_ASSERT_EQUAL(2, list_nth(list, 0));
-  TEST_ASSERT_EQUAL(1, list_nth(list, 4));
-  TEST_ASSERT_EQUAL(2, list_nth(list, 2));
+  TEST_ASSERT_EQUAL(1, list_nth(list, 0));
+  TEST_ASSERT_EQUAL(2, list_nth(list, 4));
+  TEST_ASSERT_EQUAL(3, list_nth(list, 3));
 }
 
 int

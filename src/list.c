@@ -14,6 +14,15 @@ typedef struct node {
   node *next;
 } node;
 
+node *
+make_node ()
+{
+  node *new = malloc(sizeof(node));
+  new->next = NULL;
+  new->data = 0;
+  return new;
+}
+
 int
 list_length (node *head)
 {
@@ -29,7 +38,7 @@ list_length (node *head)
 void
 list_push (node **headref, int data)
 {
-  node *head = malloc(sizeof(node));
+  node *head = make_node();
   head->data = data;
   head->next = *headref;
 
@@ -37,16 +46,32 @@ list_push (node **headref, int data)
 }
 
 node *
+list_last (node *head)
+{
+  node *current = head;
+  while (current->next) {
+    current = current->next;
+  }
+  return current;
+}
+
+void
+list_append (node **headref, int data)
+{
+  node *last = list_last(*headref);
+  last->data = data;
+  last->next = make_node();
+}
+
+node *
 make_list (int number_of_elements, ...)
 {
-  node *list = malloc(sizeof(node));
-  list->next = NULL;
-  list->data = 0;
+  node *list = make_node();
 
   va_list elements;
   va_start(elements, number_of_elements);
   for (int i = 0; i < number_of_elements; i++) {
-    list_push(&list, va_arg(elements, int));
+    list_append(&list, va_arg(elements, int));
   }
   va_end(elements);
 
