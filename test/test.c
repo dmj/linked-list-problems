@@ -33,6 +33,19 @@ test_problem_02 ()
   TEST_ASSERT_EQUAL(3, list_nth(list, 3));
 }
 
+void
+test_problem_04 ()
+{
+  node *list = make_list(3, 1, 2, 3);
+  TEST_ASSERT_EQUAL(1, list_nth(list, 0));
+  list_pop(&list);
+  TEST_ASSERT_EQUAL(2, list_nth(list, 0));
+  list_pop(&list);
+  TEST_ASSERT_EQUAL(3, list_nth(list, 0));
+  list_pop(&list);
+  TEST_ASSERT_EQUAL(0, list_length(list));
+}
+
 int
 main()
 {
@@ -40,5 +53,6 @@ main()
     RUN_TEST(test_basic_functions);
     RUN_TEST(test_problem_01);
     RUN_TEST(test_problem_02);
+    RUN_TEST(test_problem_04);
     return UNITY_END();
 }

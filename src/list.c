@@ -108,3 +108,15 @@ list_nth (node *list, int index)
   }
   exit(-1);
 }
+
+// Problem 4: Remove the head of LIST.
+void
+list_pop (node **headref)
+{
+  node *head = *headref;
+  if (!head->next) {
+    exit(-1);
+  }
+  *headref = head->next;
+  free(head);
+}
