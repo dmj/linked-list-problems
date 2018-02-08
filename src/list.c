@@ -67,3 +67,19 @@ list_count (node *list, int value)
   }
   return count;
 }
+
+// Problem 2: Return data of node at position INDEX in LIST.
+int
+list_nth (node *list, int index)
+{
+  int       pos = 0;
+  node *current = list;
+  while (current->next) {
+    if (pos == index) {
+      return current->data;
+    }
+    pos++;
+    current = current->next;
+  }
+  exit(-1);
+}
