@@ -36,13 +36,16 @@ list_length (node *head)
 }
 
 void
+list_push_node (node **headref, node *new)
+{
+  new->next = *headref;
+  *headref = new;
+}
+
+void
 list_push (node **headref, int data)
 {
-  node *head = make_node(0);
-  head->data = data;
-  head->next = *headref;
-
-  *headref = head;
+  list_push_node(headref, make_node(data));
 }
 
 node *
@@ -143,18 +146,21 @@ list_pop (node **headref)
   free(head);
 }
 
+void
+list_insert_node (node **headref, int index, node *new)
+{
+  if (index == 0) {
+    list_push_node(headref, new);
+  } else {
+    node *prev = list_nth_node(*headref, index - 1);
+    new->next = prev->next;
+    prev->next = new;
+  }
+}
+
 // Problem 5: Insert VALUE at position INDEX in LIST.
 void
 list_insert (node **headref, int index, int value)
 {
-  if (index == 0) {
-    list_push(headref, value);
-  } else {
-    node *prev = list_nth_node(*headref, index - 1);
-
-    node *new = make_node(value);
-    new->next = prev->next;
-
-    prev->next = new;
-  }
+  list_insert_node(headref, index, make_node(value));
 }
