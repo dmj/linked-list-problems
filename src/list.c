@@ -93,20 +93,26 @@ list_count (node *list, int value)
   return count;
 }
 
-// Problem 2: Return data of node at position INDEX in LIST.
-int
-list_nth (node *list, int index)
+node *
+list_nth_node (node *list, int index)
 {
   int       pos = 0;
   node *current = list;
   while (current->next) {
     if (pos == index) {
-      return current->data;
+      return current;
     }
     pos++;
     current = current->next;
   }
   exit(-1);
+}
+
+// Problem 2: Return data of node at position INDEX in LIST.
+int
+list_nth (node *list, int index)
+{
+  return list_nth_node(list, index)->data;
 }
 
 // Problem 3: Deallocate LIST.
@@ -135,4 +141,21 @@ list_pop (node **headref)
   }
   *headref = head->next;
   free(head);
+}
+
+// Problem 5: Insert VALUE at position INDEX in LIST.
+void
+list_insert (node **headref, int index, int value)
+{
+  if (index == 0) {
+    list_push(headref, value);
+  } else {
+    node *prev = list_nth_node(*headref, index - 1);
+
+    node *new = make_node();
+    new->data = value;
+    new->next = prev->next;
+
+    prev->next = new;
+  }
 }

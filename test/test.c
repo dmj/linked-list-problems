@@ -50,6 +50,17 @@ test_problem_04 ()
   free_list(&list);
 }
 
+void
+test_problem_05 ()
+{
+  node *list = make_list(3, 1, 2, 3);
+  list_insert(&list, 0, 0);
+  TEST_ASSERT_EQUAL(0, list_nth(list, 0));
+  list_insert(&list, 2, 128);
+  TEST_ASSERT_EQUAL(128, list_nth(list, 2));
+  free_list(&list);
+}
+
 int
 main()
 {
@@ -58,5 +69,6 @@ main()
     RUN_TEST(test_problem_01);
     RUN_TEST(test_problem_02);
     RUN_TEST(test_problem_04);
+    RUN_TEST(test_problem_05);
     return UNITY_END();
 }
