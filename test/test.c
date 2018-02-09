@@ -102,6 +102,20 @@ test_problem_08 ()
   lfree(&a);
 }
 
+void
+test_problem_09 ()
+{
+  lnode *source = lexample();
+  lnode *front = NULL;
+  lnode *back = NULL;
+  lsplit(source, &front, &back);
+  TEST_ASSERT_EQUAL(2, llength(front));
+  TEST_ASSERT_EQUAL(1, llength(back));
+  TEST_ASSERT_EQUAL(3, lgetnth(back, 0));
+  lfree(&front);
+  lfree(&back);
+}
+
 int
 main()
 {
@@ -114,5 +128,6 @@ main()
     RUN_TEST(test_problem_06);
     RUN_TEST(test_problem_07);
     RUN_TEST(test_problem_08);
+    RUN_TEST(test_problem_09);
     return UNITY_END();
 }

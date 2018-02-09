@@ -191,3 +191,16 @@ lappend (lnode **a, lnode **b)
   }
   *b = NULL;
 }
+
+void
+lsplit (lnode *source, lnode **front, lnode **back)
+{
+  lnode *iter = source;
+  int iterlen = llength(source) >> 1;
+  for (int i = 0; i < iterlen; i++) {
+    iter = iter->next;
+  }
+  *front = source;
+  *back  = iter->next;
+  NULLIFY(iter->next);
+}
