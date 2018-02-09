@@ -61,6 +61,19 @@ test_problem_05 ()
   free_list(&list);
 }
 
+void
+test_problem_06 ()
+{
+  node *list = make_list(3, 1, 2, 3);
+  list_insert_sort(&list, make_node(0));
+  TEST_ASSERT_EQUAL(0, list_nth(list, 0));
+  list_insert_sort(&list, make_node(2));
+  TEST_ASSERT_EQUAL(3, list_nth(list, 4));
+  list_insert_sort(&list, make_node(10));
+  TEST_ASSERT_EQUAL(10, list_nth(list, 5));
+  free_list(&list);
+}
+
 int
 main()
 {
@@ -70,5 +83,6 @@ main()
     RUN_TEST(test_problem_02);
     RUN_TEST(test_problem_04);
     RUN_TEST(test_problem_05);
+    RUN_TEST(test_problem_06);
     return UNITY_END();
 }

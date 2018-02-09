@@ -164,3 +164,16 @@ list_insert (node **headref, int index, int value)
 {
   list_insert_node(headref, index, make_node(value));
 }
+
+// Problem 6: Insert NODE in sorted LIST.
+void
+list_insert_sort (node **headref, node *new)
+{
+  int   index   = 0;
+  node *current = *headref;
+  while (current->next && current->data < new->data) {
+    index++;
+    current = current->next;
+  }
+  list_insert_node(headref, index, new);
+}
