@@ -177,3 +177,19 @@ list_insert_sort (node **headref, node *new)
   }
   list_insert_node(headref, index, new);
 }
+
+// Problem 7: Sort LIST.
+void
+list_sort (node **headref)
+{
+  node *list = make_list(0);
+  node *current = *headref;
+  node *next;
+  while (current->next) {
+    next = current->next;
+    list_insert_sort(&list, current);
+    current = next;
+  }
+  free(current);
+  *headref = list;
+}

@@ -74,6 +74,17 @@ test_problem_06 ()
   free_list(&list);
 }
 
+void
+test_problem_07 ()
+{
+  node *list = make_list(3, 2, 3, 1);
+  list_sort(&list);
+  TEST_ASSERT_EQUAL(1, list_nth(list, 0));
+  TEST_ASSERT_EQUAL(2, list_nth(list, 1));
+  TEST_ASSERT_EQUAL(3, list_nth(list, 2));
+  free_list(&list);
+}
+
 int
 main()
 {
@@ -84,5 +95,6 @@ main()
     RUN_TEST(test_problem_04);
     RUN_TEST(test_problem_05);
     RUN_TEST(test_problem_06);
+    RUN_TEST(test_problem_07);
     return UNITY_END();
 }
