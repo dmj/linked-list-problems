@@ -1,5 +1,5 @@
 /**
- * Linked list library.
+ * Linked list library v2.
  *
  * Author: David Maus <dmaus@dmaus.name>
  *
@@ -8,27 +8,33 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-typedef struct node node;
-typedef struct node {
-  int   data;
-  node *next;
-} node;
+typedef struct lnode lnode;
+typedef struct lnode {
+  int    data;
+  lnode *next;
+} lnode;
 
-node *
-make_node (int data)
+#define NULLIFY(_name_) \
+  _name_ = NULL;
+
+#define FAIL() \
+  abort();
+
+lnode *
+make_node (int value)
 {
-  node *new = malloc(sizeof(node));
-  new->next = NULL;
-  new->data = data;
-  return new;
+  lnode *node = malloc(sizeof(lnode));
+  node->data = value;
+  node->next = NULL;
+  return node;
 }
 
 int
-list_length (node *head)
+llength (lnode *list)
 {
-  int count     = 0;
-  node *current = head;
-  while (current->next) {
+  int count = 0;
+  lnode *current = list;
+  while (current) {
     count++;
     current = current->next;
   }
@@ -36,58 +42,60 @@ list_length (node *head)
 }
 
 void
-list_push_node (node **headref, node *new)
+lfree (lnode **list)
 {
-  new->next = *headref;
-  *headref = new;
+  lnode *head = *list;
+  lnode *next;
+  while (head) {
+    next = head->next;
+    free(head);
+    head = next;
+  }
+  NULLIFY(*list);
 }
 
 void
-list_push (node **headref, int data)
+lpush (lnode **list, int value)
 {
-  list_push_node(headref, make_node(data));
-}
-
-node *
-list_last (node *head)
-{
-  node *current = head;
-  while (current->next) {
-    current = current->next;
+  lnode *node = make_node(value);
+  if (list) {
+    node->next = *list;
   }
-  return current;
+  *list = node;
 }
 
-void
-list_append_data (node **headref, int data)
+int
+lpop (lnode **list)
 {
-  node *last = list_last(*headref);
-  last->data = data;
-  last->next = make_node(0);
-}
-
-node *
-make_list (int number_of_elements, ...)
-{
-  node *list = make_node(0);
-
-  va_list elements;
-  va_start(elements, number_of_elements);
-  for (int i = 0; i < number_of_elements; i++) {
-    list_append_data(&list, va_arg(elements, int));
+  if (!list) {
+    FAIL();
   }
-  va_end(elements);
 
+  lnode *head = *list;
+  int   value = head->data;
+
+  *list = head->next;
+  free(head);
+
+  return value;
+}
+
+lnode *
+lexample ()
+{
+  lnode *list = NULL;
+  lpush(&list, 3);
+  lpush(&list, 2);
+  lpush(&list, 1);
   return list;
 }
 
-// Problem 1: Return number of times VALUE occurs in LIST.
 int
-list_count (node *list, int value)
+lcount (lnode *list, int value)
 {
-  int count     = 0;
-  node *current = list;
-  while (current->next) {
+  int count = 0;
+  lnode *current = list;
+  while (current) {
     if (current->data == value) {
       count++;
     }
@@ -96,100 +104,90 @@ list_count (node *list, int value)
   return count;
 }
 
-node *
-list_nth_node (node *list, int index)
+int
+lgetnth (lnode *list, int index)
 {
-  int       pos = 0;
-  node *current = list;
-  while (current->next) {
+  int pos = 0;
+  lnode *current = list;
+  while (current) {
     if (pos == index) {
-      return current;
+      return current->data;
     }
     pos++;
     current = current->next;
   }
-  exit(-1);
-}
-
-// Problem 2: Return data of node at position INDEX in LIST.
-int
-list_nth (node *list, int index)
-{
-  return list_nth_node(list, index)->data;
-}
-
-// Problem 3: Deallocate LIST.
-void
-free_list (node **listref)
-{
-  node *current = *listref;
-  node *next;
-
-  while (current) {
-    next = current->next;
-    free(current);
-    current = next;
-  }
-
-  *listref = NULL;
-}
-
-// Problem 4: Remove the head of LIST.
-void
-list_pop (node **headref)
-{
-  node *head = *headref;
-  if (!head->next) {
-    exit(-1);
-  }
-  *headref = head->next;
-  free(head);
+  FAIL();
 }
 
 void
-list_insert_node (node **headref, int index, node *new)
+linsnth (lnode **list, int index, int value)
 {
-  if (index == 0) {
-    list_push_node(headref, new);
+  if (!*list || !index) {
+    lpush(list, value);
   } else {
-    node *prev = list_nth_node(*headref, index - 1);
-    new->next = prev->next;
-    prev->next = new;
+    int pos = 0;
+    lnode *current = *list;
+    while (current && pos < (index - 1)) {
+      pos++;
+      current = current->next;
+    }
+    if (!current) {
+      FAIL();
+    }
+    lnode *node = make_node(value);
+    node->next = current->next;
+    current->next = node;
   }
 }
 
-// Problem 5: Insert VALUE at position INDEX in LIST.
 void
-list_insert (node **headref, int index, int value)
+linsnode (lnode **list, lnode *node)
 {
-  list_insert_node(headref, index, make_node(value));
-}
-
-// Problem 6: Insert NODE in sorted LIST.
-void
-list_insert_sort (node **headref, node *new)
-{
-  int   index   = 0;
-  node *current = *headref;
-  while (current->next && current->data < new->data) {
-    index++;
+  lnode *current = *list;
+  lnode *prev = NULL;
+  while (current && current->data < node->data) {
+    prev = current;
     current = current->next;
   }
-  list_insert_node(headref, index, new);
+  node->next = current;
+  if (prev) {
+    prev->next = node;
+  } else {
+    *list = node;
+  }
 }
 
-// Problem 7: Sort LIST.
 void
-list_sort (node **headref)
+lsort (lnode **list)
 {
-  node *list = make_list(0);
-  node *current = *headref;
-  node *next;
-  while (current->next) {
-    next = current->next;
-    list_insert_sort(&list, current);
-    current = next;
+  if (*list && (*list)->next) {
+
+    lnode *sort = *list;
+    lnode *iter = (*list)->next;
+    lnode *next;
+
+    sort->next = NULL;
+    while (iter) {
+      next = iter->next;
+      linsnode(&sort, iter);
+      iter = next;
+    }
+
+    *list = sort;
   }
-  free(current);
-  *headref = list;
+}
+
+void
+lappend (lnode **a, lnode **b)
+{
+  if (*a) {
+    lnode *current = *a;
+    while (current->next) {
+      current = current->next;
+    }
+    current->next = *b;
+  } else {
+    *a = *b;
+  }
+  *b = NULL;
 }
