@@ -59,7 +59,7 @@ list_last (node *head)
 }
 
 void
-list_append (node **headref, int data)
+list_append_data (node **headref, int data)
 {
   node *last = list_last(*headref);
   last->data = data;
@@ -74,7 +74,7 @@ make_list (int number_of_elements, ...)
   va_list elements;
   va_start(elements, number_of_elements);
   for (int i = 0; i < number_of_elements; i++) {
-    list_append(&list, va_arg(elements, int));
+    list_append_data(&list, va_arg(elements, int));
   }
   va_end(elements);
 
