@@ -116,6 +116,20 @@ test_problem_09 ()
   lfree(&back);
 }
 
+void
+test_problem_10 ()
+{
+  lnode *list = lexample();
+  linsnode(&list, make_node(2));
+  TEST_ASSERT_EQUAL(4, llength(list));
+  ldeldupl(&list);
+  TEST_ASSERT_EQUAL(3, llength(list));
+  TEST_ASSERT_EQUAL(1, lgetnth(list, 0));
+  TEST_ASSERT_EQUAL(2, lgetnth(list, 1));
+  TEST_ASSERT_EQUAL(3, lgetnth(list, 2));
+  lfree(&list);
+}
+
 int
 main()
 {
@@ -129,5 +143,6 @@ main()
     RUN_TEST(test_problem_07);
     RUN_TEST(test_problem_08);
     RUN_TEST(test_problem_09);
+    RUN_TEST(test_problem_10);
     return UNITY_END();
 }

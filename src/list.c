@@ -204,3 +204,24 @@ lsplit (lnode *source, lnode **front, lnode **back)
   *back  = iter->next;
   NULLIFY(iter->next);
 }
+
+void
+ldeldupl (lnode **list)
+{
+  if (*list) {
+    lnode *iter = (*list)->next;
+    lnode *prev = *list;
+    lnode *dupl;
+    while (iter) {
+      if (iter->data == prev->data) {
+        dupl = iter;
+        iter = iter->next;
+        prev->next = iter;
+        free(dupl);
+      } else {
+        prev = iter;
+        iter = iter->next;
+      }
+    }
+  }
+}
