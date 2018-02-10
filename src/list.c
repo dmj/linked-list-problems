@@ -225,3 +225,14 @@ ldeldupl (lnode **list)
     }
   }
 }
+
+void
+lmove (lnode **a, lnode **b)
+{
+  if (*b) {
+    lnode *detach = *b;
+    *b = detach->next;
+    detach->next = *a;
+    *a = detach;
+  }
+}
