@@ -236,3 +236,21 @@ lmove (lnode **a, lnode **b)
     *a = detach;
   }
 }
+
+void
+lsplitalt (lnode *source, lnode **a, lnode **b)
+{
+  lnode *iter = source;
+  lnode *next;
+  int odd = 0;
+  while (iter) {
+    next = iter->next;
+    if (odd) {
+      lmove(b, &iter);
+    } else {
+      lmove(a, &iter);
+    }
+    iter = next;
+    odd ^= 1;
+  }
+}
